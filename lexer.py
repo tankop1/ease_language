@@ -1,6 +1,8 @@
+# Takes in a word and makes a list containing individual characters
 def split(word): 
     return [char for char in word]
 
+# Removes empty strings from a list
 def removeEmptyStrings(lst):
     while "" in lst: 
         lst.remove("") 
@@ -15,9 +17,13 @@ class Token:
         self.value = value
     
     def display(self):
+
+        # Throws error if character is unknown
         if self.token == 'ERROR':
             error = Error('UnknownError', 'cannot identify character', str(self.value), 1, r'C:\Users\tanne\My_Codes\Python\ease_language\SAMPLE.py')
             print(error.display())
+
+        # Displays token value pairs
         else:
             if self.token == 'STRING' or self.token == 'INT':
                 pair = f'{self.token}: {self.value}'
@@ -25,6 +31,7 @@ class Token:
                 pair = f'{self.token}'
             return pair
     
+    # Adds token value pairs to list
     def addToList(self):
         tokenList.append(self.display())
 
@@ -39,6 +46,7 @@ class Lexer:
         self.stringList = ''
         self.intOn = False
 
+    # Identifies correct token type
     def identify(self):
         ints = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
@@ -77,17 +85,21 @@ class Lexer:
         token = Token(tok, val)
         return token.addToList()
     
+    # Moves forward a character
     def advance(self):
         self.item = self.items[self.index]
         self.index += 1
     
+    # Displays list of token value pairs
     def displayAll(self):
         removeEmptyStrings(tokenList)
         return tokenList
     
+    # Adds an item to a string
     def addToString(self):
         self.stringList += self.item
     
+    # Returns string and clears it
     def getString(self):
         temp = self.stringList
         self.stringList = ''
@@ -103,10 +115,11 @@ class Error:
         self.line = line
         self.file = fileName
     
+    # Displays errors
     def display(self):
         return f'File "{self.file}", line {str(self.line)}\n   {self.code}\n{self.error}: {self.detail}'
 
-
+# Runs needed methods
 def run(text):
     wordList = split(text)
     l1 = Lexer(text)
